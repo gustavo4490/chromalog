@@ -2,8 +2,8 @@
 
 **ChromaLog** is a tiny, dependency‑free logger that prints **colored, badge‑style messages** in the browser console. It helps you quickly scan successes, infos, warnings and errors in large traces. Built in TypeScript.
 
-[![license](https://img.shields.io/badge/license-MIT-black.svg)](#license)
 ![types](https://img.shields.io/badge/TypeScript-ready-blue)
+[![license](https://img.shields.io/badge/license-MIT-black.svg)](#license)
 
 > Keywords: *browser console logger, colored console logs, styled console, TypeScript logger, React logger, JavaScript logging utility, console badges, pretty logs*.
 
@@ -75,20 +75,21 @@ ChromaLog.config({ enabled: true }); // re-enable
 ```
 
 You can wire this to your build env:
+
 ```ts
 ChromaLog.config({ enabled: import.meta.env.DEV });
 ```
 
 ---
 
-## URL‑Driven Config (for demos)
+## URL-Driven Config (for demos)
 
 Tweak styles **without changing code** during demos:
 
 - `?styled=0` → disables styles.
 - `?success=color:purple;font-weight:bold;` → overrides the `success` badge CSS.
 
-Demo handler:
+Demo handler (already used in the demo app):
 
 ```ts
 const params = new URLSearchParams(location.search);
@@ -109,49 +110,17 @@ Optional quick links for your demo page:
 
 ---
 
-## API
-
-```ts
-// Global configuration
-ChromaLog.config(options: {
-  styled?: boolean;          // default: true
-  enabled?: boolean;         // default: true
-  styles?: Partial<{
-    success: string;
-    info: string;
-    warning: string;
-    error: string;
-  }>;
-});
-
-// Log methods
-ChromaLog.success(...args: any[]): void;
-ChromaLog.info(...args: any[]): void;
-ChromaLog.warning(...args: any[]): void;
-ChromaLog.error(...args: any[]): void;
-ChromaLog.log(...args: any[]): void; // raw console.log
-```
-
----
-
 ## Screenshot
 
-Add a screenshot of your console output to help users instantly see the value:
-
-```
-docs/screenshot.png
-```
-
-```md
-![ChromaLog screenshot](docs/screenshot.png)
-```
+<p align="center">
+  <img src="docs/screenshot.png" alt="ChromaLog console screenshot with colored badges for success, info, warning, and error" width="900" />
+</p>
 
 ---
 
 ## Browser Support
 
-ChromaLog uses the `%c` console formatter, supported by all modern browsers (Chrome, Edge, Firefox, Safari).  
-If a browser doesn’t support `%c`, it will fall back to plain text.
+ChromaLog uses the `%c` console formatter, supported by all modern browsers (Chrome, Edge, Firefox, Safari). If a browser doesn’t support `%c`, it will fall back to plain text.
 
 ---
 
