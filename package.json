@@ -1,6 +1,6 @@
 {
   "name": "@hunab/chromalog",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Pretty console badges for the browser. Tiny TypeScript logger with colored levels and URL-driven config.",
   "keywords": [
     "console",
