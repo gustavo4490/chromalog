@@ -5,10 +5,10 @@
     "moduleResolution": "Bundler",
     "lib": ["ES2019", "DOM"],
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "outDir": "dist",
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src"]
+    "include": ["src/lib/**/*.ts"]
 }

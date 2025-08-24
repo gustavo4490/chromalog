@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 
 export default defineConfig({
+  publicDir: false, 
   build: {
     lib: {
       entry: 'src/lib/index.ts',
@@ -10,5 +11,10 @@ export default defineConfig({
       fileName: (format) => `index.${format}.js`
     }
   },
-  plugins: [dts({ insertTypesEntry: true })]
+  plugins: [
+    dts({
+      insertTypesEntry: true,
+      include: ['src/lib/index.ts'],
+    })
+  ]
 })
