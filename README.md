@@ -1,17 +1,19 @@
 # ChromaLog — Pretty Console Badges for the Browser (TypeScript)
-
-**ChromaLog** is a tiny, dependency‑free logger that prints **colored, badge‑style messages** in the browser console. It helps you quickly scan successes, infos, warnings and errors in large traces. Built in TypeScript.
-
+[![npm version](https://img.shields.io/npm/v/@hunab/chromalog.svg)](https://www.npmjs.com/package/@hunab/chromalog)
+[![npm downloads](https://img.shields.io/npm/dm/@hunab/chromalog.svg)](https://www.npmjs.com/package/@hunab/chromalog)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@hunab/chromalog.svg)](https://bundlephobia.com/package/@hunab/chromalog)
 ![types](https://img.shields.io/badge/TypeScript-ready-blue)
 [![license](https://img.shields.io/badge/license-MIT-black.svg)](#license)
 
-> Keywords: *browser console logger, colored console logs, styled console, TypeScript logger, React logger, JavaScript logging utility, console badges, pretty logs*.
+**ChromaLog** is a tiny, dependency-free logger that prints **colored, badge-style messages** in the browser console. It helps you quickly scan successes, infos, warnings and errors in large traces. Built in TypeScript.
+
+> Keywords: *browser console logger, colored console logs, styled console, TypeScript logger, React logger, JavaScript logging utility, console badges, pretty logs, console formatter, logging library for frontend.*
 
 ---
 
 ## Features
 - ✅ **Colored badges** per level: `success`, `info`, `warning`, `error`.
-- ✅ **Right console method** per level (`console.info`, `console.warn`, `console.error`).
+- ✅ Uses the **right console method** per level (`console.info`, `console.warn`, `console.error`).
 - ✅ **Level icons** (✅ ℹ️ ⚠️ 🛑) for faster scanning.
 - ✅ **Auto light/dark theme** based on `prefers-color-scheme`.
 - ✅ **Enable/disable** globally via `ChromaLog.config({ enabled: false })`.
@@ -29,8 +31,13 @@ yarn add @hunab/chromalog
 pnpm add @hunab/chromalog
 ```
 
-> CDN (when published):  
-> `<script type="module" src="https://unpkg.com/@hunab/chromalog/dist/index.es.js"></script>`
+CDN:
+```html
+<script type="module">
+  import { ChromaLog } from 'https://unpkg.com/@hunab/chromalog/dist/index.es.js';
+  ChromaLog.info('Hello from CDN!');
+</script>
+```
 
 ---
 
@@ -110,6 +117,39 @@ Optional quick links for your demo page:
 
 ---
 
+## API
+
+```ts
+type Level = 'success' | 'error' | 'warning' | 'info';
+type StyleMap = Record<Level, string>;
+
+interface Config {
+  styled: boolean;
+  enabled: boolean;
+  styles: StyleMap;
+}
+
+type ConfigUpdate = {
+  styled?: boolean;
+  enabled?: boolean;
+  styles?: Partial<StyleMap>;
+};
+
+// Update config (styles supports partial updates)
+ChromaLog.config(options: ConfigUpdate);
+ChromaLog.enable();  // enable styled logs
+ChromaLog.disable(); // disable styled logs
+
+// Methods
+ChromaLog.success(...args: any[]): void;
+ChromaLog.info(...args: any[]): void;
+ChromaLog.warning(...args: any[]): void;
+ChromaLog.error(...args: any[]): void;
+ChromaLog.log(...args: any[]): void; // raw console.log passthrough
+```
+
+---
+
 ## Screenshot
 
 <p align="center">
@@ -121,6 +161,14 @@ Optional quick links for your demo page:
 ## Browser Support
 
 ChromaLog uses the `%c` console formatter, supported by all modern browsers (Chrome, Edge, Firefox, Safari). If a browser doesn’t support `%c`, it will fall back to plain text.
+
+---
+
+## Contributing
+
+- Fork → create branch → PR (add tests/examples when relevant).
+- Follow **Conventional Commits** (`feat:`, `fix:`, `docs:`, `chore:`…).
+- Run `npm run build` before opening the PR.
 
 ---
 
