@@ -1,11 +1,12 @@
-# ChromaLog — Pretty Console Badges for the Browser (TypeScript)
+
+# chromalog — Pretty Console Badges for the Browser (TypeScript)
 [![npm version](https://img.shields.io/npm/v/@hunab/chromalog.svg)](https://www.npmjs.com/package/@hunab/chromalog)
 [![npm downloads](https://img.shields.io/npm/dm/@hunab/chromalog.svg)](https://www.npmjs.com/package/@hunab/chromalog)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/@hunab/chromalog.svg)](https://bundlephobia.com/package/@hunab/chromalog)
 ![types](https://img.shields.io/badge/TypeScript-ready-blue)
 [![license](https://img.shields.io/badge/license-MIT-black.svg)](#license)
 
-**ChromaLog** is a tiny, dependency-free logger that prints **colored, badge-style messages** in the browser console. It helps you quickly scan successes, infos, warnings and errors in large traces. Built in TypeScript.
+**chromalog** is a tiny, dependency-free logger that prints **colored, badge-style messages** in the browser console. It helps you quickly scan successes, infos, warnings and errors in large traces. Built in TypeScript.
 
 > Keywords: *browser console logger, colored console logs, styled console, TypeScript logger, React logger, JavaScript logging utility, console badges, pretty logs, console formatter, logging library for frontend.*
 
@@ -16,7 +17,7 @@
 - ✅ Uses the **right console method** per level (`console.info`, `console.warn`, `console.error`).
 - ✅ **Level icons** (✅ ℹ️ ⚠️ 🛑) for faster scanning.
 - ✅ **Auto light/dark theme** based on `prefers-color-scheme`.
-- ✅ **Enable/disable** globally via `ChromaLog.config({ enabled: false })`.
+- ✅ **Enable/disable** globally via `chromalog.config({ enabled: false })`.
 - ✅ Zero dependencies, **TypeScript** typings, tiny footprint.
 
 ---
@@ -34,8 +35,8 @@ pnpm add @hunab/chromalog
 CDN:
 ```html
 <script type="module">
-  import { ChromaLog } from 'https://unpkg.com/@hunab/chromalog/dist/index.es.js';
-  ChromaLog.info('Hello from CDN!');
+  import { chromalog } from 'https://unpkg.com/@hunab/chromalog/dist/index.es.js';
+  chromalog.info('Hello from CDN!');
 </script>
 ```
 
@@ -44,12 +45,12 @@ CDN:
 ## Quick Start
 
 ```ts
-import { ChromaLog } from '@hunab/chromalog';
+import { chromalog } from '@hunab/chromalog';
 
-ChromaLog.success('User registered successfully!');
-ChromaLog.info('Fetching data from the API...');
-ChromaLog.warning('The session token will expire soon.');
-ChromaLog.error('Error connecting to the server.');
+chromalog.success('User registered successfully!');
+chromalog.info('Fetching data from the API...');
+chromalog.warning('The session token will expire soon.');
+chromalog.error('Error connecting to the server.');
 ```
 
 ---
@@ -57,7 +58,7 @@ ChromaLog.error('Error connecting to the server.');
 ## Customize Styles
 
 ```ts
-ChromaLog.config({
+chromalog.config({
   styles: {
     success: 'color:white;background:forestgreen;padding:2px 8px;border-radius:4px;',
     info: 'color:white;background:dodgerblue;padding:2px 8px;border-radius:4px;',
@@ -66,7 +67,7 @@ ChromaLog.config({
   }
 });
 
-ChromaLog.success('Custom style applied!');
+chromalog.success('Custom style applied!');
 ```
 
 ---
@@ -76,15 +77,15 @@ ChromaLog.success('Custom style applied!');
 Silence logs globally (e.g., on production):
 
 ```ts
-ChromaLog.config({ enabled: false }); // disable all styled logs
+chromalog.config({ enabled: false }); // disable all styled logs
 // later...
-ChromaLog.config({ enabled: true }); // re-enable
+chromalog.config({ enabled: true }); // re-enable
 ```
 
 You can wire this to your build env:
 
 ```ts
-ChromaLog.config({ enabled: import.meta.env.DEV });
+chromalog.config({ enabled: import.meta.env.DEV });
 ```
 
 ---
@@ -100,9 +101,9 @@ Demo handler (already used in the demo app):
 
 ```ts
 const params = new URLSearchParams(location.search);
-if (params.get('styled') === '0') ChromaLog.config({ styled: false });
+if (params.get('styled') === '0') chromalog.config({ styled: false });
 const successStyle = params.get('success');
-if (successStyle) ChromaLog.config({ styles: { success: successStyle } });
+if (successStyle) chromalog.config({ styles: { success: successStyle } });
 ```
 
 Optional quick links for your demo page:
@@ -136,16 +137,16 @@ type ConfigUpdate = {
 };
 
 // Update config (styles supports partial updates)
-ChromaLog.config(options: ConfigUpdate);
-ChromaLog.enable();  // enable styled logs
-ChromaLog.disable(); // disable styled logs
+chromalog.config(options: ConfigUpdate);
+chromalog.enable();  // enable styled logs
+chromalog.disable(); // disable styled logs
 
 // Methods
-ChromaLog.success(...args: any[]): void;
-ChromaLog.info(...args: any[]): void;
-ChromaLog.warning(...args: any[]): void;
-ChromaLog.error(...args: any[]): void;
-ChromaLog.log(...args: any[]): void; // raw console.log passthrough
+chromalog.success(...args: any[]): void;
+chromalog.info(...args: any[]): void;
+chromalog.warning(...args: any[]): void;
+chromalog.error(...args: any[]): void;
+chromalog.log(...args: any[]): void; // raw console.log passthrough
 ```
 
 ---
@@ -153,14 +154,14 @@ ChromaLog.log(...args: any[]): void; // raw console.log passthrough
 ## Screenshot
 
 <p align="center">
-  <img src="docs/screenshot.png" alt="ChromaLog console screenshot with colored badges for success, info, warning, and error" width="900" />
+  <img src="docs/screenshot.png" alt="chromalog console screenshot with colored badges for success, info, warning, and error" width="900" />
 </p>
 
 ---
 
 ## Browser Support
 
-ChromaLog uses the `%c` console formatter, supported by all modern browsers (Chrome, Edge, Firefox, Safari). If a browser doesn’t support `%c`, it will fall back to plain text.
+chromalog uses the `%c` console formatter, supported by all modern browsers (Chrome, Edge, Firefox, Safari). If a browser doesn’t support `%c`, it will fall back to plain text.
 
 ---
 

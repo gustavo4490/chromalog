@@ -1,6 +1,4 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────────────────────────────────────
+// ─ Types ─
 export type Level = 'success' | 'error' | 'warning' | 'info';
 export type StyleMap = Record<Level, string>;
 
@@ -20,9 +18,7 @@ export type ConfigUpdate = {
   styles?: Partial<StyleMap>;
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Defaults (auto light/dark)
-// ─────────────────────────────────────────────────────────────────────────────
+// ─ Defaults (auto light/dark) ─
 const prefersDark =
   typeof window !== 'undefined' &&
   typeof window.matchMedia === 'function' &&
@@ -50,9 +46,7 @@ const defaultConfig: Config = {
 
 let currentConfig: Config = { ...defaultConfig };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Internals
-// ─────────────────────────────────────────────────────────────────────────────
+// ─ Internals ─
 const ICON: Record<Level, string> = {
   success: '✅',
   info: 'ℹ️',
@@ -83,12 +77,8 @@ const print = (level: Level, ...args: any[]) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-/**
- * Public API
- */
-// ─────────────────────────────────────────────────────────────────────────────
-export const ChromaLog = {
+// ─ Public API (lowercase) ─
+export const chromalog = {
   /**
    * Update global configuration. `styles` accepts partial updates.
    */
@@ -118,10 +108,14 @@ export const ChromaLog = {
 
   // Level methods
   success: (...args: any[]) => print('success', ...args),
-  error: (...args: any[]) => print('error', ...args),
+  error:   (...args: any[]) => print('error', ...args),
   warning: (...args: any[]) => print('warning', ...args),
-  info: (...args: any[]) => print('info', ...args),
+  info:    (...args: any[]) => print('info', ...args),
 
   // Raw passthrough (no level badge)
   log: (...args: any[]) => console.log(...args)
 };
+
+// Default export (ESM): import chromalog from '@hunab/chromalog'
+export default chromalog;
+

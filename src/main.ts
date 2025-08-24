@@ -1,4 +1,4 @@
-import { ChromaLog } from './lib';
+import { chromalog } from './lib';
 
 // Small helper to print section headers in the console
 const section = (title: string) =>
@@ -6,14 +6,14 @@ const section = (title: string) =>
 
 // 1) Default styles
 section('1) Default styles');
-ChromaLog.success('User registered successfully!');
-ChromaLog.info('Fetching data from the API...');
-ChromaLog.warning('The session token will expire soon.');
-ChromaLog.error('Error connecting to the server.');
+chromalog.success('User registered successfully!');
+chromalog.info('Fetching data from the API...');
+chromalog.warning('The session token will expire soon.');
+chromalog.error('Error connecting to the server.');
 
 // 2) Custom styles (badge-like look)
 section('2) Custom styles');
-ChromaLog.config({
+chromalog.config({
   styles: {
     success:
       'color:white;background:forestgreen;padding:2px 8px;border-radius:4px;',
@@ -22,24 +22,24 @@ ChromaLog.config({
     error: 'color:white;background:crimson;padding:2px 8px;border-radius:4px;',
   },
 });
-ChromaLog.success('Custom style applied!');
-ChromaLog.info('Styled info');
-ChromaLog.warning('Styled warning');
-ChromaLog.error('Styled error');
+chromalog.success('Custom style applied!');
+chromalog.info('Styled info');
+chromalog.warning('Styled warning');
+chromalog.error('Styled error');
 
 // 3) Toggle styles OFF and then back ON
 section('3) Disable styles');
-ChromaLog.config({ styled: false });
-ChromaLog.info('Styles are OFF (plain output).');
-ChromaLog.config({ styled: true }); // restore styled output
+chromalog.config({ styled: false });
+chromalog.info('Styles are OFF (plain output).');
+chromalog.config({ styled: true }); // restore styled output
 
 // 4) URL-driven config (try: ?styled=0 or ?success=color:purple;font-weight:bold;)
 section('4) URL-driven config');
 const params = new URLSearchParams(location.search);
-if (params.get('styled') === '0') ChromaLog.config({ styled: false });
+if (params.get('styled') === '0') chromalog.config({ styled: false });
 const successStyle = params.get('success');
-if (successStyle) ChromaLog.config({ styles: { success: successStyle } });
-ChromaLog.success(
+if (successStyle) chromalog.config({ styles: { success: successStyle } });
+chromalog.success(
   'URL config demo → try ?styled=0 or ?success=color:purple;font-weight:bold;'
 );
 
@@ -48,5 +48,5 @@ section('5) Mini timer demo');
 const t0 = performance.now();
 setTimeout(() => {
   const ms = Math.round(performance.now() - t0);
-  ChromaLog.info(`Fake async finished in ${ms}ms`);
+  chromalog.info(`Fake async finished in ${ms}ms`);
 }, 400);

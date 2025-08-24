@@ -6,7 +6,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: 'src/lib/index.ts',
-      name: 'ChromaLog',
+      name: 'chromalog',
       formats: ['es', 'umd'],
       fileName: (format) => `index.${format}.js`
     }
