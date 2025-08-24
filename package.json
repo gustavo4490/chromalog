@@ -1,15 +1,63 @@
 {
-  "name": "chromalog",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@hunab/chromalog",
+  "version": "0.1.0",
+  "description": "Pretty console badges for the browser. Tiny TypeScript logger with colored levels and URL-driven config.",
+  "keywords": [
+    "console",
+    "logger",
+    "browser",
+    "badges",
+    "styled",
+    "typescript",
+    "react",
+    "javascript"
+  ],
+  "author": "Gustavo Díaz",
+  "license": "MIT",
   "type": "module",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "default": "./dist/index.es.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "docs/screenshot.png"
+  ],
+  "sideEffects": false,
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "typescript": "~5.8.3",
-    "vite": "^7.1.2"
-  }
+    "typescript": "^5.5.4",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^4.2.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gustavo4490/chromalog.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gustavo4490/chromalog/issues"
+  },
+  "homepage": "https://github.com/gustavo4490/chromalog#readme",
+  "engines": {
+    "node": ">=16"
+  },
+  "unpkg": "dist/index.umd.js",
+  "jsdelivr": "dist/index.umd.js"
 }

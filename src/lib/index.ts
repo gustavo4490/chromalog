@@ -1,113 +1,88 @@
-type Level = 'success' | 'error' | 'warning' | 'info' | 'debug';
+type Level = 'success' | 'error' | 'warning' | 'info';
 
-interface StyleMap { [K in Level]?: string }      // Browser (CSS)
-type NodeStyle = [open: string, close: string];    // Node (ANSI)
-type NodeStyleMap = { [K in Level]?: NodeStyle };
+interface StyleMap { [K in Level]?: string; }
 
 interface Config {
     styled: boolean;
-    namespace?: string;
-    transport?: 'auto' | 'browser' | 'node' | 'react-native';
-    styles: StyleMap;       // CSS (browser)
-    nodeStyles: NodeStyleMap; // ANSI (node/RN)
-    enabled?: boolean;
+    enabled: boolean;
+    styles: StyleMap;          // CSS (browser)
 }
 
-const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
-const isReactNative = typeof navigator !== 'undefined' && (navigator as any).product === 'ReactNative';
-const isNode = typeof process !== 'undefined' && !!process.versions?.node;
+// pick theme based on system color scheme
+const prefersDark = typeof window !== 'undefined'
+    && window.matchMedia?.('(prefers-color-scheme: dark)').matches;
 
-const ansi = (n: number) => `\u001b[${n}m`;
-const RESET = ansi(0), BOLD = ansi(1);
+const light: StyleMap = {
+    success: 'color: limegreen; font-weight: bold;',
+    error: 'color: crimson; font-weight: bold;',
+    warning: 'color: orange; font-weight: bold;',
+    info: 'color: dodgerblue; font-weight: bold;'
+};
+
+const dark: StyleMap = {
+    success: 'color: #22c55e; font-weight: 700;',
+    error: 'color: #f87171; font-weight: 700;',
+    warning: 'color: #f59e0b; font-weight: 700;',
+    info: 'color: #60a5fa; font-weight: 700;'
+};
 
 const defaultConfig: Config = {
     styled: true,
     enabled: true,
-    transport: 'auto',
-    styles: {
-        success: 'color: limegreen; font-weight: bold;',
-        error: 'color: crimson; font-weight: bold;',
-        warning: 'color: orange; font-weight: bold;',
-        info: 'color: dodgerblue; font-weight: bold;',
-        debug: 'color: gray;'
-    },
-    nodeStyles: {
-        success: [`${BOLD}${ansi(32)}`, RESET],
-        error: [`${BOLD}${ansi(31)}`, RESET],
-        warning: [`${BOLD}${ansi(33)}`, RESET],
-        info: [`${BOLD}${ansi(34)}`, RESET],
-        debug: [ansi(90), RESET]
+    styles: prefersDark ? dark : light
+};
+
+let currentConfig: Config = { ...defaultConfig };
+
+const ICON: Record<Level, string> = {
+    success: '✅', info: 'ℹ️', warning: '⚠️', error: '🛑'
+};
+
+const METHOD: Record<Level, (...a: any[]) => void> = {
+    success: console.log,
+    info: console.info,
+    warning: console.warn,
+    error: console.error
+};
+
+const getStyles = (level: Level) =>
+    currentConfig.styled ? currentConfig.styles[level] || '' : '';
+
+const print = (level: Level, ...args: any[]) => {
+    if (!currentConfig.enabled) return;
+    const method = METHOD[level] || console.log;
+    const icon = ICON[level];
+    const style = getStyles(level);
+
+    if (style) {
+        method(`%c${icon} [${level.toUpperCase()}]`, style, ...args);
+    } else {
+        method(`${icon} [${level.toUpperCase()}]`, ...args);
     }
 };
 
-let cfg: Config = { ...defaultConfig };
-
-function transport() {
-    if (cfg.transport && cfg.transport !== 'auto') return cfg.transport;
-    if (isBrowser) return 'browser';
-    if (isReactNative) return 'react-native';
-    if (isNode) return 'node';
-    return 'browser';
-}
-
-function consoleFn(level: Level) {
-    if (level === 'error') return console.error;
-    if (level === 'warning') return console.warn;
-    if (level === 'info') return console.info;
-    return console.log;
-}
-
-function print(level: Level, ...args: any[]) {
-    if (!cfg.enabled) return;
-    const ns = cfg.namespace ? `[${cfg.namespace}] ` : '';
-    const tag = `[${level.toUpperCase()}]`;
-    const t = transport();
-
-    if (!cfg.styled) {
-        consoleFn(level)(`${ns}${tag}`, ...args);
-        return;
-    }
-
-    if (t === 'browser') {
-        const sNS = 'font-weight:600;color:#111827;';
-        const sLV = cfg.styles[level] || '';
-        consoleFn(level)(`%c${ns}%c${tag}`, sNS, sLV, ...args);
-    } else {
-        const [open, close] = cfg.nodeStyles[level] || ['', ''];
-        consoleFn(level)(`${open}${ns}${tag}${close}`, ...args);
-    }
-}
-
-// API pública
 export const ChromaLog = {
+    // global configuration
     config(options: Partial<Config>) {
-        cfg = {
-            ...cfg,
+        currentConfig = {
+            ...currentConfig,
             ...options,
-            styles: { ...cfg.styles, ...(options.styles || {}) },
-            nodeStyles: { ...cfg.nodeStyles, ...(options.nodeStyles || {}) }
+            styles: { ...currentConfig.styles, ...(options.styles || {}) }
         };
     },
-    enable() { cfg.enabled = true; },
-    disable() { cfg.enabled = false; },
-    namespace(ns: string) {
-        const child = Object.create(this);
-        child.config({ namespace: ns });
-        return child as typeof ChromaLog;
-    },
-    group(title: string) {
-        if (transport() === 'browser' && console.group) console.group(title);
-        else console.log(`--- ${title} ---`);
-        return { end: () => console.groupEnd?.() };
-    },
-    timer(name = 'timer') {
-        const start = Date.now();
-        return { end: () => this.debug(`${name}: ${Date.now() - start}ms`) };
-    },
-    success: (...a: any[]) => print('success', ...a),
-    error: (...a: any[]) => print('error', ...a),
-    warning: (...a: any[]) => print('warning', ...a),
-    info: (...a: any[]) => print('info', ...a),
-    debug: (...a: any[]) => print('debug', ...a),
-    log: (...a: any[]) => console.log(...a)
+
+    // quick toggles
+    enable() { currentConfig.enabled = true; },
+    disable() { currentConfig.enabled = false; },
+
+    // logging methods
+    success: (...args: any[]) => print('success', ...args),
+    error: (...args: any[]) => print('error', ...args),
+    warning: (...args: any[]) => print('warning', ...args),
+    info: (...args: any[]) => print('info', ...args),
+
+    // raw console.log passthrough
+    log: (...args: any[]) => console.log(...args)
 };
+
+export type { Config, StyleMap, Level };
